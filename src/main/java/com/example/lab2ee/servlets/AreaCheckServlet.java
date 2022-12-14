@@ -15,26 +15,26 @@ import java.util.LinkedList;
 public class AreaCheckServlet extends HttpServlet {
 
 
-    private boolean hitRectangle(double x, double y, double r) {
+    private boolean areaRectangle(double x, double y, double r) {
         return (x >= 0 && x <= r) && (y >= 0 && y <= r / 2);
     }
 
-    private boolean hitTriangle(double x, double y, double r) {
+    private boolean areaTriangle(double x, double y, double r) {
         return  (x <= 0) && (y <= 0) && (y >= (-2) * x - r);
     }
 
-    private boolean hitSector(double x, double y, double r) {
+    private boolean areaSector(double x, double y, double r) {
         return  (x * x + y * y <= r * r) && (x >= 0) && (y <= 0);
     }
 
-    private boolean hit(double x, double y, double r) {
-        return hitRectangle(x, y, r) || hitTriangle(x, y, r) || hitSector(x, y, r);
+    private boolean area(double x, double y, double r) {
+        return areaRectangle(x, y, r) || areaTriangle(x, y, r) || areaSector(x, y, r);
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long start = System.nanoTime();
 
-        String timeOffset = request.getParameter("time-offset");
+        request.getParameter("time-offset");
         String date = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy").format(Calendar.getInstance().getTime());
 
         String x = request.getParameter("x");
@@ -62,21 +62,21 @@ public class AreaCheckServlet extends HttpServlet {
         long executionTime = System.nanoTime() - start;
 
         try {
-            PointsBean responseBean = new PointsBean();
-            responseBean.setX(Double.parseDouble(x));
-            responseBean.setY(Double.parseDouble(y));
-            responseBean.setR(Double.parseDouble(r));
-            responseBean.setCurrentTime(date);
-            responseBean.setExecutionTime(executionTime);
-            responseBean.setInArea(hit(Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(r)));
-            result.add(responseBean);
+            PointsBean pointsBean = new PointsBean();
+            pointsBean.setX(Double.parseDouble(x));
+            pointsBean.setY(Double.parseDouble(y));
+            pointsBean.setR(Double.parseDouble(r));
+            pointsBean.setCurrentTime(date);
+            pointsBean.setExecutionTime(executionTime);
+            pointsBean.setInArea(area(Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(r)));
+            result.add(pointsBean);
         } catch (NumberFormatException e) {
             System.out.println("Can't parse numbers");
         }
 
         context.setAttribute("results", result);
-
         request.getRequestDispatcher("/index.jsp").forward(request, response);
+
 
     }
 }

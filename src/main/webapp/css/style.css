@@ -60,3 +60,8 @@ input {
 .input-val{
 
 }
+#graph {
+    color: #1d1d1d;
+    transform: scale(1.2);
+    cursor: pointer;
+}

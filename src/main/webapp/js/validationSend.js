@@ -1,7 +1,7 @@
 $("input:checkbox").on('click', function() {
-    var $box = $(this);
+    let $box = $(this);
     if ($box.is(":checked")) {
-        var group = "input:checkbox[name='" + $box.attr("name") + "']";
+        let group = "input:checkbox[name='" + $box.attr("name") + "']";
         $(group).prop("checked", false);
         $box.prop("checked", true);
     } else {
@@ -18,9 +18,9 @@ function validateNumbers(num) {
 }
 
 form.onsubmit = function () {
-       let errorInputs = Array.from(formInputs).filter(input => input.value === '' || !validateNumbers(input.value));
+       let errorInputs = Array.from(formInputs).filter(input => input.value === '' || !validateNumbers(input.value) || input.value < -5 || input.value > 5);
     formInputs.forEach(function (input) {
-        if (input.value === '' || !validateNumbers(input.value) || input.value >= -5 || input.value <= 5) {
+        if (input.value === '' || !validateNumbers(input.value) || input.value < -5 || input.value > 5) {
             input.classList.add('error-hovered');
         } else {
             input.classList.remove('error-hovered');
